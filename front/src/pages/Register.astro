@@ -1,15 +1,45 @@
 ---
 import General from "../layouts/General.astro";
 
+// constants
+const URL = "http://localhost:3000/api";
+
+if (Astro.request.method === "POST") {
+  const data = await Astro.request.formData();
+  const name = data.get("name");
+  const password = data.get("password");
+  const confirmPassword = data.get("confirmPassword");
+
+  const response = await fetch(`${URL}/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({ name, password }),
+  })
+    .then((res) => res.json())
+    .then((res) => console.log(res))
+    .catch((err) => console.error(err));
+}
 ---
 
 <General>
-    <form>
-        <label for="name">Name</label>
-        <input name="name" type="text" />
-        <label for="password">Password</label>
-        <input name="password" type="password" />
-        <label for="confirm_password">Confirm password</label>
-        <input name="confirm_password" type="password" />
-      </form>
+  <div class="w-4/5 mx-auto my-28 px-7 py-4 bg-[#3c3e46] rounded-lg shadow-xl">
+    <h2 class="mb-7 text-2xl font-semibold">Sign Up</h2>
+    <form method="POST" class="flex flex-col">
+      <label class="mb-3" for="name">Name</label>
+      <input class="bg-[#343434] mb-8 rounded-lg" name="name" type="text" />
+      <label class="mb-3" for="password">Password</label>
+      <input
+        class="bg-[#343434] mb-4 rounded-lg"
+        name="password"
+        type="password"
+      />
+      <!-- add confirm password feature -->
+      <!-- <label for="confirmPassword">Confirm password</label>
+      <input class="bg-[#343434]" name="confirmPassword" type="password"/> -->
+      <button class="bg-[#30429d] mt-3 mb-4 py-1 rounded-lg">Submit</button>
+    </form>
+  </div>
 </General>

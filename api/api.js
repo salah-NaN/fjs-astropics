@@ -6,12 +6,14 @@ const multer = require('multer'); // file upload
 const fs = require('fs'); // file i/o
 const sharp = require('sharp'); // image editing
 const jwt = require('jsonwebtoken'); // Importa la llibreria jsonwebtoken per a generar i verificar JWT
+const cookieParser = require('cookie-parser');
 
 const SECRET_KEY = "vols-que-et-punxi-amb-un-punxo"; // to be used in jsonwebtoken creation
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser())
 
 const usersFile = 'users.json';
 const imagesFolder = 'uploads';
@@ -62,7 +64,9 @@ const checkToken = (req, res, next) => {
 
 app.post('/api/login', (req, res) => {
     const { name, password } = req.body;
+
     const users = readUsers();
+    
 
     const user = users.find(user => user.name === name);
     if (!user || !bcrypt.compareSync(password, user.password)) {
@@ -151,7 +155,7 @@ app.post('/api/upload', checkToken, upload.single('image'), async (req, res) => 
 
 
 // Endpoint per obtenir les imatges d'un usuari
-app.get('/api/images', checkToken, (req, res) => {
+app.get('/api/images',checkToken, (req, res) => {
     const userId = req.userId;
     const userImages = readImages().filter(image => image.userId === userId);
     res.json(userImages);
