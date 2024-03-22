@@ -45,9 +45,9 @@ function writeUImages(data) {
 
 // Middleware per verificar el JWT en la cookie
 const checkToken = (req, res, next) => {
-    const token = req.cookies?.token; // Obté el token des de la cookie de la petició
+    let token = req.cookies?.token; // Obté el token des de la cookie de la petició
     if (!token) {
-        return res.status(401).json({ error: 'Unauthorized' }); // Retorna error 401 si no hi ha cap token
+        token = req.headers['authorization']?.split(' ')[1] // Retorna error 401 si no hi ha cap token
     }
     try {
         const decodedToken = jwt.verify(token, SECRET_KEY); // Verifica el token utilitzant la clau secreta
@@ -76,7 +76,7 @@ app.post('/api/login', (req, res) => {
     const token = jwt.sign({ userId: user.id, userName: user.name }, SECRET_KEY, { expiresIn: '2h' }); // Genera un token JWT vàlid durant 2 hores
     res.cookie('token', token, { httpOnly: false, maxAge: 7200000 }); // Estableix el token com una cookie
 
-    res.json({ message: 'Login successful', userId: user.id, name: user.name });
+    res.json({ message: 'Login successful', userId: user.id, name: user.name, token });
 });
 
 
@@ -159,6 +159,19 @@ app.get('/api/images',checkToken, (req, res) => {
     const userId = req.userId;
     const userImages = readImages().filter(image => image.userId === userId);
     res.json(userImages);
+});
+
+// Endpoint per obtenir totes les imatges
+app.get('/api/allImages',checkToken, (req, res) => {
+    const userImages = readImages()
+    res.json(userImages);
+});
+
+
+// Endpoint per obtenir tots els users
+app.get('/api/allUsers', checkToken, (req, res) => {
+    const users = readUsers()
+    res.json(users);
 });
 
 

@@ -1,0 +1,26 @@
+---
+
+---
+
+<nav class=' fixed top-0 h-20 w-full flex justify-between items-center pl-10 pr-8 bg-[#2d2e34] shadow-lg backdrop-filter backdrop-blur-lg bg-opacity-80
+            md:pl-20 md:pr-16
+            lg:pl-24'>
+                <div class="flex justify-center items-center gap-4">
+                    <div class="flex justify-center items-center gap-4 cursor-pointer">
+                        <img class="size-10" src='/logo.svg'></img>
+                        <h1
+                            class="text-2xl font-semibold bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-transparent " >AstroPics</h1>
+                    </div>
+
+                    <div class="hidden
+                    md:ml-20 md:flex md:gap-10 md:visible">
+                        {/* <a href="#" >Docs</a>
+                        <a href="#" >Services</a>
+                        <a href="#" >About us</a> */}
+                    </div>
+                </div>
+                <a class={`${Astro.cookies.get('token') ? 'block' : 'hidden'}`}
+                href="/">
+                <img src="log-out.svg"/>
+            </a>
+            </nav>

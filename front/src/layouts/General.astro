@@ -1,4 +1,6 @@
 ---
+import NavBar from "../components/NavBar.astro";
+
 
 ---
 
@@ -10,8 +12,9 @@
 		<meta name="generator" content={Astro.generator} />
 		<title>Astropics</title>
 	</head>
-	<body style="background-color: #222328; color: #fafafa;">
-        <p>el navbar</p>
+	<body class="mt-28" style="background-color: #222328; color: #fafafa;">
+        <!-- navbar -->
+		<NavBar/>
 		<slot/>
 	</body>
 </html>

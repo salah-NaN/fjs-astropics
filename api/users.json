@@ -18,5 +18,20 @@
     "id": "931c0c89-eb23-4a5f-b029-41f012d32f4c",
     "name": "sara",
     "password": "$2a$08$eh6EmPR.Xc3r9Dla3MoHIeIqi8hCRbWM0HGpteffWm48ExF34UXG2"
+  },
+  {
+    "id": "673f1ec9-69da-4499-8816-f40a1ca4c6cd",
+    "name": "pere",
+    "password": "$2a$08$W90SoFJk8phlLIXwQYjgQeggIOHaLpkGKUl5cZCtk9G4RyxBUBegm"
+  },
+  {
+    "id": "521f0b72-4439-4794-aa08-175742a0baf6",
+    "name": " marta",
+    "password": "$2a$08$3s6jMW8/pGq1YLfJzrDLveJKMXvgqqWYayp8sgmMJ1gfT0XCkR.26"
+  },
+  {
+    "id": "a169bfc5-a2bf-496e-90e9-c714812d9c60",
+    "name": "joan",
+    "password": "$2a$08$rqgbwb4fmOZQLaa/iZIKNOmKSRkJeah1tKrqsCWVQpPk/0nwBz0xu"
   }
 ]
