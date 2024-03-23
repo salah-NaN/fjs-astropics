@@ -36,59 +36,25 @@ if (Astro.request.method === "POST") {
   const image = data.get("image") as File;
   const comment = data.get("hashtags");
 
-
   const dataSend = new FormData();
   dataSend.append("image", image);
   dataSend.append("hashtags", comment);
 
-  console.log(dataSend)
-
   try {
     // fetch to upload a post
-  const options = {
-    method: "POST",
-    body: dataSend,
-    headers: {
-      Authorization: `Bearer ${token}`,
-    }
-  }
-  let upload = await fetch(`${URL}/upload`, options)
-  upload = await upload.json();
-  console.log('response: ', upload)
+    const options = {
+      method: "POST",
+      body: dataSend,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    let upload = await fetch(`${URL}/upload`, options);
+    upload = await upload.json();
+    if (upload.message) return Astro.redirect("/Home");
   } catch (error) {
-    console.log('este es el error: ' + error)
+    console.log(error);
   }
-  
-  // if(upload.error){
-    //   // handle error
-    // } else {
-      //   console.log(upload)
-      //   return Astro.redirect('/Home')
-      // }
-      
-      // let invalidPost = false;
-      // const upload = await fetch(`${URL}/upload`, {
-        //   method: "POST",
-  //   body: dataSend,
-  //   headers: {
-  //     Authorization: `Bearer ${token}`,
-  //   },
-  // })
-  //   .then((res) => res.json())
-  //   .then((res) => {
-  //     console.log(res);
-  //     if (res.error) {
-  //       invalidPost = true;
-  //     }
-  //   })
-  //   .catch((err) => console.error(err));
-
-  // if (invalidPost) {
-  //   // handle error
-  // } else {
-  //   return Astro.redirect("/Home");
-  // }
-
 }
 ---
 
@@ -99,10 +65,12 @@ if (Astro.request.method === "POST") {
     class="flex flex-col w-10/12 mx-auto"
   >
     <div
-      class="flex flex-col justify-around items-center h-72 bg-[#383a41] mb-12 rounded-lg border-2 border-purple-500"
+      class="flex flex-col justify-evenly items-center h-72 bg-[#383a41] mb-12 rounded-lg border-2 border-purple-500"
     >
       <!-- taking the photo -->
-      <img class="size-44" src="/logo.svg" />
+      <label class="w-full flex justify-center" for="formFile">
+        <img class="w-24" src="/camera.svg" />
+      </label>
 
       <input
         type="file"
@@ -121,7 +89,7 @@ if (Astro.request.method === "POST") {
     <!-- redirect to a confirm page with same input values -->
     <button
       type="submit"
-      class=" self-end px-3 py-1 border-2 rounded-lg border-purple-500 bg-[#2b2d33] text-purple-500"
+      class="self-end px-3 py-1 border-2 rounded-lg border-purple-500 bg-[#2b2d33] text-purple-500"
       >Continue</button
     >
   </form>

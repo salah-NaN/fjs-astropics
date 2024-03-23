@@ -8,7 +8,7 @@ const sharp = require('sharp'); // image editing
 const jwt = require('jsonwebtoken'); // Importa la llibreria jsonwebtoken per a generar i verificar JWT
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser')
-
+const path = require('path')
 const SECRET_KEY = "vols-que-et-punxi-amb-un-punxo"; // to be used in jsonwebtoken creation
 
 const app = express();
@@ -16,6 +16,7 @@ app.use(express.json());
 app.use(cors());
 app.use(cookieParser())
 app.use(bodyParser.json())
+app.use('/uploads/resized', express.static(path.join(__dirname, 'uploads','resized')))
 
 const usersFile = 'users.json';
 const imagesFolder = 'uploads';
@@ -43,6 +44,8 @@ function readImages() {
 function writeUImages(data) {
     fs.writeFileSync(imagesFile, JSON.stringify(data, null, 2));
 }
+
+
 
 
 // Middleware per verificar el JWT en la cookie
@@ -129,12 +132,6 @@ const upload = multer({ storage: storage }); // Configura multer per a gestionar
 app.post('/api/upload', checkToken, upload.single('image'), async (req, res) => {
     const { userId, hashtags } = req.body;
     const image = req.file;
-
-    console.log('este es el file: ')
-    console.log(image)
-    console.log('y estos los hashtags:', hashtags)
-
-
     // Redimensionar la imatge abans de desar-la
     try {
         await sharp(image.path)
@@ -149,11 +146,9 @@ app.post('/api/upload', checkToken, upload.single('image'), async (req, res) => 
         //throw error
         return res.status(500).json({ error: 'Failed to process image xx' + error });
     }
-    console.log('im hereeeeeeeeeeeeeeeeeeeeee')
     // Guardar la informació de la imatge al fitxer images.json
     const images = readImages();
     const toSend = { userId: req.userId, filename: image.filename, hashtags, date: new Date() }
-    console.log('here is toSend', toSend)
     images.push(toSend);
     fs.writeFileSync(imagesFile, JSON.stringify(images, null, 2));
 

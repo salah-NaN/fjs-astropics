@@ -1,0 +1,58 @@
+---
+import General from "../../layouts/General.astro";
+const { Id } = Astro.params;
+
+// constants
+const URL = "http://localhost:3000/api";
+
+// if is not cookie redirect
+if (!Astro.cookies.has("token")) {
+  return Astro.redirect("/");
+}
+
+// to prepare security of fetchs and send a header with cookie
+const token = Astro.cookies.get("token").value;
+
+// fetch to refresh the page and check if cookie is valid
+let invalidToken = false;
+const refresh = await fetch(`${URL}/refresh`, {
+  method: "GET",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  },
+})
+  .then((res) => res.json())
+  .then((res) => {
+    if (res.error) invalidToken = true;
+  })
+  .catch((err) => console.error(err));
+// if invalid token then redirect
+if (invalidToken) {
+  return Astro.redirect("/");
+}
+
+// fetch to get all posts of user clicked
+try {
+  const options = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    }
+  };
+  let postsByUser = await fetch(URL + "/user/" + Id + "images", options);
+  postsByUser = await postsByUser.json();
+  console.log(postsByUser)
+} catch (error) {
+    console.log(error)
+}
+---
+
+<General>
+  <div>banner</div>
+
+  <ul>
+    {}
+  </ul>
+</General>

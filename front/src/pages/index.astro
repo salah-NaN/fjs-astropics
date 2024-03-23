@@ -26,7 +26,6 @@ if (Astro.request.method === "POST") {
   })
     .then((res) => res.json())
     .then((res) => {
-      console.log(res);
       if (res.token) {
         Astro.cookies.set("token", res.token);
         // Astro.response.headers.append("token", res.token);
