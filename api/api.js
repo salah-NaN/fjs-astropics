@@ -7,6 +7,7 @@ const fs = require('fs'); // file i/o
 const sharp = require('sharp'); // image editing
 const jwt = require('jsonwebtoken'); // Importa la llibreria jsonwebtoken per a generar i verificar JWT
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser')
 
 const SECRET_KEY = "vols-que-et-punxi-amb-un-punxo"; // to be used in jsonwebtoken creation
 
@@ -14,6 +15,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser())
+app.use(bodyParser.json())
 
 const usersFile = 'users.json';
 const imagesFolder = 'uploads';
@@ -84,8 +86,8 @@ app.post('/api/login', (req, res) => {
 app.get('/api/refresh', checkToken, async (req, res) => {
     const users = readUsers();
 
-    const user = users.find(user => user.id === userId);
-    if (!user || !bcrypt.compareSync(password, user.password)) {
+    const user = users.find(user => user.id === req.userId);
+    if (!user) {
         return res.status(401).json({ error: 'User not found' });
     }
 
@@ -114,7 +116,7 @@ app.post('/api/register', (req, res) => {
 // Configuració de multer per gestionar la pujada de fitxers
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'tmp') // Especifica la carpeta de destinació dels fitxers pujats
+        cb(null, 'uploads/') // Especifica la carpeta de destinació dels fitxers pujats
     },
     filename: function (req, file, cb) {
         cb(null, `${Date.now()}_${file.originalname}`) // Assigna un nom únic als fitxers pujats
@@ -128,11 +130,16 @@ app.post('/api/upload', checkToken, upload.single('image'), async (req, res) => 
     const { userId, hashtags } = req.body;
     const image = req.file;
 
+    console.log('este es el file: ')
+    console.log(image)
+    console.log('y estos los hashtags:', hashtags)
+
+
     // Redimensionar la imatge abans de desar-la
     try {
         await sharp(image.path)
             .resize({ width: 800 })
-            .toFile(`${imagesFolder}/${image.filename}`)
+            .toFile(`${imagesFolder}/resized/${image.filename}`)
             .then(async () => {
                 // Eliminar la imatge original després de redimensionar-la i desar-la
                 await fs.unlink(image.path, (err)=>err?console.log(err):()=>{});
@@ -140,12 +147,14 @@ app.post('/api/upload', checkToken, upload.single('image'), async (req, res) => 
 
     } catch (error) {
         //throw error
-        return res.status(500).json({ error: 'Failed to process image xx' });
+        return res.status(500).json({ error: 'Failed to process image xx' + error });
     }
-
+    console.log('im hereeeeeeeeeeeeeeeeeeeeee')
     // Guardar la informació de la imatge al fitxer images.json
     const images = readImages();
-    images.push({ userId: req.userId, filename: image.filename, hashtags });
+    const toSend = { userId: req.userId, filename: image.filename, hashtags, date: new Date() }
+    console.log('here is toSend', toSend)
+    images.push(toSend);
     fs.writeFileSync(imagesFile, JSON.stringify(images, null, 2));
 
     res.json({ message: 'Image uploaded successfully' });

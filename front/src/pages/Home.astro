@@ -1,42 +1,49 @@
 ---
 import General from "../layouts/General.astro";
-import AddButton from '../components/AddButton.astro'
+import AddButton from "../components/AddButton.astro";
 // constants
 const URL = "http://localhost:3000/api";
 
-// fetch to refresh the page and check if cookie is valid
-// at the moment i cant do it cuz of checktoken
-// const refresh = await fetch(`${URL}/refresh`, {
-//   method: "GET",
-//   headers: {
-//     "Content-Type": "application/json",
-//   },
-//   credentials: "include",
-// })
-//   .then((res) => res.json())
-//   .then((res) => {
-//     console.log(res);
-//   })
-//   .catch((err) => console.error(err));
-
-// fetch to login credenials
-if(!Astro.cookies.has('token')){
-  return Astro.redirect('/')
+// if is not cookie redirect
+if (!Astro.cookies.has("token")) {
+  return Astro.redirect("/");
 }
-const token = Astro.cookies.get('token').value
-let allImages;
+
+// to prepare security of fetchs and send a header with cookie
+const token = Astro.cookies.get("token").value;
+
+// fetch to refresh the page and check if cookie is valid
+let invalidToken = false
+const refresh = await fetch(`${URL}/refresh`, {
+  method: "GET",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  },
+})
+  .then((res) => res.json())
+  .then((res) => {
+    if(res.error) invalidToken = true
+  })
+  .catch((err) => console.error(err));
+  // if invalid token then redirect
+  if(invalidToken){
+    return Astro.redirect('/')
+  }
+
+
+
+// fetch to get all images
+let allImages = [];
 const responseAllImages = await fetch(`${URL}/allImages`, {
   method: "GET",
   headers: {
     "Content-Type": "application/json",
-    "Authorization": `Bearer ${token}`
-
+    Authorization: `Bearer ${token}`,
   },
-
 })
   .then((res) => res.json())
   .then((res) => {
-    console.log(res);
     allImages = res;
   })
   .catch((err) => console.error(err));
@@ -47,12 +54,11 @@ const responseAllUsers = await fetch(`${URL}/allUsers`, {
   method: "GET",
   headers: {
     "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
   },
-  credentials: "include",
 })
   .then((res) => res.json())
   .then((res) => {
-    console.log(res);
     allUsers = res;
   })
   .catch((err) => console.error(err));
@@ -65,7 +71,7 @@ const responseAllUsers = await fetch(`${URL}/allUsers`, {
       allImages.map((post) => (
         <li class=" h-[400px] flex flex-col justify-end my-7 bg-[#35373e] rounded-lg shadow-xl">
           <div class="flex-grow bg-red-500" />
-          <div class="h-20 bg-yellow-400" >
+          <div class="h-20 bg-yellow-400">
             <h5>{allUsers.find((user) => user.id === post.userId).name}</h5>
             <p>{post.hashtags}</p>
           </div>
@@ -74,9 +80,7 @@ const responseAllUsers = await fetch(`${URL}/allUsers`, {
     }
   </ul>
 
-
   <!-- nuevo post -->
   <!-- redirect to addPost -->
-  <AddButton/>
-
+  <AddButton />
 </General>
