@@ -1,6 +1,6 @@
 ---
 import General from "../../layouts/General.astro";
-const { Id } = Astro.params;
+const { Id: hashtag } = Astro.params;
 
 // constants
 const URL = "http://localhost:3000/api";
@@ -33,18 +33,18 @@ if (invalidToken) {
 }
 
 let posts = []
-// fetch to get all posts of user clicked
+// fetch to get all posts of hashtag clicked
 try {
 
-  let postsByUser = await fetch(URL + "/user/" + Id + "/images", {
+  let postsByHashtag = await fetch(URL + "/images/" + hashtag, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     }
   });
-  postsByUser = await postsByUser.json();
-  posts = postsByUser
+  postsByHashtag = await postsByHashtag.json();
+  posts = postsByHashtag
 
 } catch (error) {
     console.log(error)
@@ -65,14 +65,13 @@ const responseAllUsers = await fetch(`${URL}/allUsers`, {
   })
   .catch((err) => console.error(err));
   
-  const name = allUsers.filter(user => user.id === Id).name
 
 ---
 
 <General>
   <div>
     <h2 class="">
-      {name}
+     { '#' + hashtag}
     </h2>
     <div class="flex flex-col">
       <p>{posts.length}</p>
