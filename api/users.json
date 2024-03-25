@@ -1,17 +1,17 @@
 [
   {
     "id": "37b11015-203a-4efd-a2d0-72832cd05a10",
-    "name": "xavier",
+    "name": "Xavier",
     "password": "$2a$08$qDLrYRS9dq2vPXtSBWRO0e2ixZSkRmyatI77Jfq44FpeXy1MNUZhC"
   },
   {
     "id": "a5e876e1-6055-47f5-b532-383ee62a0fb5",
-    "name": "ricard",
+    "name": "Ricard",
     "password": "$2a$08$QjRx1.viN5JabAHhMj2SquZDw.YtSFq9hmnfcRVBBAoWcZlPZcCKC"
   },
   {
     "id": "3b9efa16-4554-424b-b1b3-2057078f5435",
-    "name": "salah",
+    "name": "Salah",
     "password": "$2a$08$zzvZD7kcG.I5gY61byBGa.xqtbcq0nwWCTsv0EVlRcKiRm2WYnqaK"
   },
   {
@@ -25,11 +25,6 @@
     "password": "$2a$08$W90SoFJk8phlLIXwQYjgQeggIOHaLpkGKUl5cZCtk9G4RyxBUBegm"
   },
   {
-    "id": "521f0b72-4439-4794-aa08-175742a0baf6",
-    "name": " marta",
-    "password": "$2a$08$3s6jMW8/pGq1YLfJzrDLveJKMXvgqqWYayp8sgmMJ1gfT0XCkR.26"
-  },
-  {
     "id": "a169bfc5-a2bf-496e-90e9-c714812d9c60",
     "name": "joan",
     "password": "$2a$08$rqgbwb4fmOZQLaa/iZIKNOmKSRkJeah1tKrqsCWVQpPk/0nwBz0xu"
@@ -41,7 +36,12 @@
   },
   {
     "id": "d345b7f5-253f-4633-a7fd-5a291810efa5",
-    "name": "aya",
+    "name": "Aya",
     "password": "$2a$08$UzaEJjUvHGN31xA4Ng9iUuncFOrHDksaNtp5.9AcvR/hEpBozEKS6"
+  },
+  {
+    "id": "7a5b7e48-86e8-42cc-9ed4-3ee18f03533d",
+    "name": "marta",
+    "password": "$2a$08$e6F9T8dpRD5r68Xh0t3Gcut4LauXsbILREQ82WnllZB3PO5t3oHrq"
   }
 ]

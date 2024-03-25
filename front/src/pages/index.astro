@@ -9,7 +9,6 @@ let alert = false;
 
 // delete cookie when user is at Login page
 Astro.cookies.delete("token");
-
 if (Astro.request.method === "POST") {
   const data = await Astro.request.formData();
   const name = data.get("name");
@@ -27,6 +26,7 @@ if (Astro.request.method === "POST") {
     .then((res) => res.json())
     .then((res) => {
       if (res.token) {
+        console.log(res)
         Astro.cookies.set("token", res.token);
         // Astro.response.headers.append("token", res.token);
       } 

@@ -1,5 +1,6 @@
 ---
 import General from "../../layouts/General.astro";
+import Back from "../../components/Back.astro";
 const { Id: hashtag } = Astro.params;
 
 // constants
@@ -70,17 +71,19 @@ const responseAllUsers = await fetch(`${URL}/allUsers`, {
 ---
 
 <General>
-  <div>
-    <h2 class="">
+  <Back url="/Home" />
+
+  <div class="flex justify-center items-center gap-24">
+    <h2 class="text-2xl font-light bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-transparent ">
      { '#' + hashtag}
     </h2>
-    <div class="flex flex-col">
+    <div class="flex flex-col justify-center items-center">
       <p>{posts.length}</p>
-      <p>publicaciones</p>
+      <p class="font-semibold bg-clip-text bg-gradient-to-r from-[#dadada] to-[#9598a5] text-transparent" >publicaciones</p>
     </div>
   </div>
 
-  <ul class="w-full mx-auto">
+  <ul class="w-11/12 mx-auto">
     {
       posts.map((post) => (
         <li class=" h-[600px] flex flex-col justify-end my-7 bg-[#2f3138] rounded-lg shadow-xl">
@@ -92,7 +95,9 @@ const responseAllUsers = await fetch(`${URL}/allUsers`, {
           <div class="min-h-24 py-2 px-3">
             <a href={`/users/${post.userId}`}
             class="text-lg " >{allUsers.find((user) => user.id === post.userId).name}</a>
-            <p class="text-[15px] truncate line-clamp-2 text-wrap" >{post.hashtags}</p>
+            <p class="text-[15px] truncate line-clamp-2 text-wrap" >{
+              post.hashtags.split(' ').map(word => word.includes('#') ? <span class="text-[#8e5cf5] text-medium">{word + ' '}</span> : word + ' ')
+            }</p>
           </div>
         </li>
       ))

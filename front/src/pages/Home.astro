@@ -1,6 +1,7 @@
 ---
 import General from "../layouts/General.astro";
 import AddButton from "../components/AddButton.astro";
+
 // constants
 const URL = "http://localhost:3000/api";
 
@@ -66,7 +67,7 @@ const responseAllUsers = await fetch(`${URL}/allUsers`, {
   // this is a func helper for making hashtags clickable
   function shiftHashtag(hashtag){
     const array = hashtag.split('')
-    array.shift()
+    array.shift() 
     const str = array.join('')
     return str
   }
@@ -76,7 +77,7 @@ const responseAllUsers = await fetch(`${URL}/allUsers`, {
 
 <General>
   <!-- lista de posts -->
-  <ul class="w-11/12 mx-auto">
+  <ul class="w-11/12 mx-auto mt-32">
     {
       allImages.map((post) => (
         <li class=" h-[600px] flex flex-col justify-end my-7 bg-[#2f3138] rounded-lg shadow-xl">
@@ -87,9 +88,9 @@ const responseAllUsers = await fetch(`${URL}/allUsers`, {
             </div>
           <div class="min-h-24 py-2 px-3">
             <a href={`/users/${post.userId}`}
-            class="text-lg " >{allUsers.find((user) => user.id === post.userId).name}</a>
+            class="text-lg font-medium" >{allUsers.find((user) => user.id === post.userId).name}</a>
             <div class="text-[15px] truncate line-clamp-2 text-wrap" >{
-              post.hashtags.split(' ').map(word => word.includes('#') ? <a href={`/hashtags/${(word ? shiftHashtag(word) : '')}`}>{word + ' '}</a> : word + ' ')
+              post.hashtags.split(' ').map(word => word.includes('#') ? <a class="text-[#8e5cf5] text-medium" href={`/hashtags/${(word ? shiftHashtag(word) : '')}`}>{word + ' '}</a> : word + ' ')
             }</div>
           </div>
         </li>

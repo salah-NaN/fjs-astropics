@@ -1,5 +1,7 @@
 ---
 import General from "../../layouts/General.astro";
+import Back from "../../components/Back.astro";
+
 const { Id } = Astro.params;
 
 // constants
@@ -77,17 +79,19 @@ const responseAllUsers = await fetch(`${URL}/allUsers`, {
 ---
 
 <General>
-  <div>
-    <h2 class="">
+  <Back url="/Home" />
+  
+  <div class="flex justify-center items-center gap-24">
+    <h2 class="text-2xl font-light ">
       {allUsers.find(user => user.id === Id).name}
     </h2>
-    <div class="flex flex-col">
+    <div class="flex flex-col justify-center items-center">
       <p>{posts.length}</p>
-      <p>publicaciones</p>
+      <p class="font-semibold bg-clip-text bg-gradient-to-r from-[#dadada] to-[#9598a5] text-transparent" >publicaciones</p>
     </div>
   </div>
 
-  <ul class="w-full mx-auto">
+  <ul class="w-11/12 mx-auto">
     {
       posts.map((post) => (
         <li class=" h-[600px] flex flex-col justify-end my-7 bg-[#2f3138] rounded-lg shadow-xl">
@@ -100,7 +104,7 @@ const responseAllUsers = await fetch(`${URL}/allUsers`, {
             <a href={`/users/${post.userId}`}
             class="text-lg " >{allUsers.find((user) => user.id === post.userId).name}</a>
             <div class="text-[15px] truncate line-clamp-2 text-wrap" >{
-              post.hashtags.split(' ').map(word => word.includes('#') ? <a href={`/hashtags/${(word ? shiftHashtag(word) : '')}`}>{word + ' '}</a> : word + ' ')
+              post.hashtags.split(' ').map(word => word.includes('#') ? <a class="text-[#8e5cf5] text-medium" href={`/hashtags/${(word ? shiftHashtag(word) : '')}`}>{word + ' '}</a> : word + ' ')
             }</div>
           </div>
         </li>

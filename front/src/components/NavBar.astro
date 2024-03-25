@@ -1,5 +1,5 @@
 ---
-const { img, id } = Astro.props;
+const { id } = Astro.props;
 
 ---
 
@@ -7,11 +7,12 @@ const { img, id } = Astro.props;
             md:pl-20 md:pr-16
             lg:pl-24'>
                 <div class="flex justify-center items-center gap-4">
-                    <div class="flex justify-center items-center gap-4 cursor-pointer">
+                    <a href="/Home"
+                    class="flex justify-center items-center gap-4 cursor-pointer">
                         <img class="size-10" src='/logo.svg'></img>
                         <h1
                             class="text-2xl font-semibold bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-transparent " >AstroPics</h1>
-                    </div>
+                    </a>
 
                     <div class="hidden
                     md:ml-20 md:flex md:gap-10 md:visible">
@@ -22,12 +23,12 @@ const { img, id } = Astro.props;
                 </div>
 
                 <a class={`${Astro.cookies.get('token') ? 'block' : 'hidden'}`}
-                href="/">
+                href="/MyProfile">
                     <img class=" inline size-7" src={ '/profile-circle.svg'}/>
                 </a>
 
                 <a class={`${Astro.cookies.get('token') ? 'block' : 'hidden'}`}
-                href={`/`}>
+                href="/">
                     <img class=" inline ml-2 size-7" src={ '/log-out.svg'}/>
                 </a>
             </nav>

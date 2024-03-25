@@ -1,6 +1,6 @@
 ---
 import NavBar from "../components/NavBar.astro";
-const { img } = Astro.props;
+const { id } = Astro.props;
 ---
 
 <html lang="en">
@@ -11,9 +11,9 @@ const { img } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>Astropics</title>
   </head>
-  <body class="mt-28" style="background-color: #222328; color: #fafafa;">
+  <body class="mt-24" style="background-color: #222328; color: #dadada;">
     <!-- navbar -->
-    <NavBar img="log-out.svg" />
+    <NavBar id={id}/>
     <slot />
   </body>
 </html>

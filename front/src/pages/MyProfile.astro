@@ -1,6 +1,7 @@
 ---
-import General from "../../layouts/General.astro";
-const { Id } = Astro.params;
+import General from "../layouts/General.astro";
+import Back from "../components/Back.astro";
+
 
 // constants
 const URL = "http://localhost:3000/api";
@@ -13,6 +14,8 @@ if (!Astro.cookies.has("token")) {
 // to prepare security of fetchs and send a header with cookie
 const token = Astro.cookies.get("token").value;
 
+// to get id of logged user
+let id = -1
 // fetch to refresh the page and check if cookie is valid
 let invalidToken = false;
 const refresh = await fetch(`${URL}/refresh`, {
@@ -25,6 +28,7 @@ const refresh = await fetch(`${URL}/refresh`, {
   .then((res) => res.json())
   .then((res) => {
     if (res.error) invalidToken = true;
+    if(res.id) id = res.id
   })
   .catch((err) => console.error(err));
 // if invalid token then redirect
@@ -36,7 +40,7 @@ let posts = []
 // fetch to get all posts of user clicked
 try {
 
-  let postsByUser = await fetch(URL + "/user/" + Id + "/images", {
+  let postsByUser = await fetch(URL + "/user/" + id + "/images", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -45,7 +49,6 @@ try {
   });
   postsByUser = await postsByUser.json();
   posts = postsByUser.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-
 
 } catch (error) {
     console.log(error)
@@ -75,12 +78,15 @@ const responseAllUsers = await fetch(`${URL}/allUsers`, {
     return str
   }
 
+  console.log(id)
+
 ---
 
 <General>
+  <Back url="/Home" />
   <div>
     <h2 class="">
-      {allUsers.find(user => user.id === Id).name}
+      {allUsers.find(user => user.id === id).name}
     </h2>
     <div class="flex flex-col">
       <p>{posts.length}</p>
@@ -101,7 +107,7 @@ const responseAllUsers = await fetch(`${URL}/allUsers`, {
             <a href={`/users/${post.userId}`}
             class="text-lg " >{allUsers.find((user) => user.id === post.userId).name}</a>
             <div class="text-[15px] truncate line-clamp-2 text-wrap" >{
-              post.hashtags.split(' ').map(word => word.includes('#') ? <a href={`/hashtags/${(word ? shiftHashtag(word) : '')}`}>{word + ' '}</a> : word + ' ')
+              post.hashtags.split(' ').map(word => word.includes('#') ? <a class="text-[#8e5cf5] text-medium" href={`/hashtags/${(word ? shiftHashtag(word) : '')}`}>{word + ' '}</a> : word + ' ')
             }</div>
           </div>
         </li>
