@@ -1,6 +1,6 @@
 ---
 import General from "../../layouts/General.astro";
-const { Id: hashtag } = Astro.params;
+const { Id } = Astro.params;
 
 // constants
 const URL = "http://localhost:3000/api";
@@ -33,18 +33,18 @@ if (invalidToken) {
 }
 
 let posts = []
-// fetch to get all posts of hashtag clicked
+// fetch to get all posts of user clicked
 try {
 
-  let postsByHashtag = await fetch(URL + "/images/" + hashtag, {
+  let postsByUser = await fetch(URL + "/user/" + Id + "/images", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     }
   });
-  postsByHashtag = await postsByHashtag.json();
-  posts = postsByHashtag.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  postsByUser = await postsByUser.json();
+  posts = postsByUser.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
 
 } catch (error) {
@@ -67,12 +67,20 @@ const responseAllUsers = await fetch(`${URL}/allUsers`, {
   .catch((err) => console.error(err));
   
 
+  // this is a func helper for making hashtags clickable
+  function shiftHashtag(hashtag){
+    const array = hashtag.split('')
+    array.shift()
+    const str = array.join('')
+    return str
+  }
+
 ---
 
 <General>
   <div>
     <h2 class="">
-     { '#' + hashtag}
+      {allUsers.find(user => user.id === Id).name}
     </h2>
     <div class="flex flex-col">
       <p>{posts.length}</p>
@@ -92,7 +100,9 @@ const responseAllUsers = await fetch(`${URL}/allUsers`, {
           <div class="min-h-24 py-2 px-3">
             <a href={`/users/${post.userId}`}
             class="text-lg " >{allUsers.find((user) => user.id === post.userId).name}</a>
-            <p class="text-[15px] truncate line-clamp-2 text-wrap" >{post.hashtags}</p>
+            <div class="text-[15px] truncate line-clamp-2 text-wrap" >{
+              post.hashtags.split(' ').map(word => word.includes('#') ? <a href={`/hashtags/${(word ? shiftHashtag(word) : '')}`}>{word + ' '}</a> : word + ' ')
+            }</div>
           </div>
         </li>
       ))

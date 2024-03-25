@@ -44,7 +44,7 @@ try {
     }
   });
   postsByUser = await postsByUser.json();
-  posts = postsByUser
+  posts = postsByUser.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
 } catch (error) {
     console.log(error)

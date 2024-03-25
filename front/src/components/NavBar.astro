@@ -1,5 +1,5 @@
 ---
-const { img } = Astro.props;
+const { img, id } = Astro.props;
 
 ---
 
@@ -20,8 +20,14 @@ const { img } = Astro.props;
                         <a href="#" >About us</a> */}
                     </div>
                 </div>
+
                 <a class={`${Astro.cookies.get('token') ? 'block' : 'hidden'}`}
                 href="/">
-                <img class="size-7" src={ '/log-out.svg'}/>
-            </a>
+                    <img class=" inline size-7" src={ '/profile-circle.svg'}/>
+                </a>
+
+                <a class={`${Astro.cookies.get('token') ? 'block' : 'hidden'}`}
+                href={`/`}>
+                    <img class=" inline ml-2 size-7" src={ '/log-out.svg'}/>
+                </a>
             </nav>

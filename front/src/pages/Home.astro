@@ -44,7 +44,7 @@ const responseAllImages = await fetch(`${URL}/allImages`, {
 })
   .then((res) => res.json())
   .then((res) => {
-    allImages = res;
+    allImages = res.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   })
   .catch((err) => console.error(err));
 
@@ -76,7 +76,7 @@ const responseAllUsers = await fetch(`${URL}/allUsers`, {
 
 <General>
   <!-- lista de posts -->
-  <ul class="w-full mx-auto">
+  <ul class="w-11/12 mx-auto">
     {
       allImages.map((post) => (
         <li class=" h-[600px] flex flex-col justify-end my-7 bg-[#2f3138] rounded-lg shadow-xl">
