@@ -63,7 +63,7 @@ const responseAllUsers = await fetch(`${URL}/allUsers`, {
   })
   .catch((err) => console.error(err));
 
-
+  // this is a func helper for making hashtags clickable
   function shiftHashtag(hashtag){
     const array = hashtag.split('')
     array.shift()

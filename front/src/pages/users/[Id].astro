@@ -65,14 +65,21 @@ const responseAllUsers = await fetch(`${URL}/allUsers`, {
   })
   .catch((err) => console.error(err));
   
-  const name = allUsers.filter(user => user.id === Id).name
+
+  // this is a func helper for making hashtags clickable
+  function shiftHashtag(hashtag){
+    const array = hashtag.split('')
+    array.shift()
+    const str = array.join('')
+    return str
+  }
 
 ---
 
 <General>
   <div>
     <h2 class="">
-      {name}
+      {allUsers.find(user => user.id === Id).name}
     </h2>
     <div class="flex flex-col">
       <p>{posts.length}</p>
@@ -92,7 +99,9 @@ const responseAllUsers = await fetch(`${URL}/allUsers`, {
           <div class="min-h-24 py-2 px-3">
             <a href={`/users/${post.userId}`}
             class="text-lg " >{allUsers.find((user) => user.id === post.userId).name}</a>
-            <p class="text-[15px] truncate line-clamp-2 text-wrap" >{post.hashtags}</p>
+            <div class="text-[15px] truncate line-clamp-2 text-wrap" >{
+              post.hashtags.split(' ').map(word => word.includes('#') ? <a href={`/hashtags/${(word ? shiftHashtag(word) : '')}`}>{word + ' '}</a> : word + ' ')
+            }</div>
           </div>
         </li>
       ))

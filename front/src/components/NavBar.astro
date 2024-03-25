@@ -1,4 +1,5 @@
 ---
+const { img } = Astro.props;
 
 ---
 
@@ -21,6 +22,6 @@
                 </div>
                 <a class={`${Astro.cookies.get('token') ? 'block' : 'hidden'}`}
                 href="/">
-                <img class="size-7" src="log-out.svg"/>
+                <img class="size-7" src={ '/log-out.svg'}/>
             </a>
             </nav>
