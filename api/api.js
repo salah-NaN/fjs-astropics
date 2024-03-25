@@ -193,6 +193,20 @@ app.get('/api/images/:hashtag', checkToken, (req, res) => {
     res.json(hashtagImages);
 });
 
+// Endpoint para eliminar un post de un user
+app.delete('/api/images/:name', checkToken, async (req, res) => {
+    try{
+        const name = req.params.name;
+        const nameImages = readImages().filter(image => image.userName!==name);
+        writeImages(nameImages)
+        const users = readUsers().filter(usr => usr.name!==name)
+        writeUsers(users)
+        res.json({'message': `usuari ${name} eliminat`});
+    } catch (err) {
+        res.status(500).json({'error': 'error eliminant usuari'})
+    }
+
+})
 
 //@TODO
 //Crear ruta estàtica per servir imatges a /uploads
