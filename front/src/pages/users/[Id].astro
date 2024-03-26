@@ -1,6 +1,8 @@
 ---
 import General from "../../layouts/General.astro";
 import Back from "../../components/Back.astro";
+import AddButton from "../../components/AddButton.astro";
+
 
 const { Id } = Astro.params;
 
@@ -111,4 +113,5 @@ const responseAllUsers = await fetch(`${URL}/allUsers`, {
       ))
     }
   </ul>
+  <AddButton />
 </General>

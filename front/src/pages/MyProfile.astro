@@ -1,6 +1,8 @@
 ---
 import General from "../layouts/General.astro";
 import Back from "../components/Back.astro";
+import AddButton from "../components/AddButton.astro";
+
 
 // constants
 const URL = "http://localhost:3000/api";
@@ -135,11 +137,12 @@ console.log(id);
           <script>
             const deleteBtn = document.getElementById("delete")
             document.addEventListener('click', ()=> {
-              fetch()
+
             })
           </script>
         </li>
       ))
     }
   </ul>
+  <AddButton />
 </General>
