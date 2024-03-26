@@ -3,7 +3,7 @@ import General from "../layouts/General.astro";
 import AddButton from "../components/AddButton.astro";
 
 // constants
-const URL = "http://localhost:3000/api";
+const URL = "https://ricardhernandez.com/api";
 
 // if is not cookie redirect
 if (!Astro.cookies.has("token")) {
@@ -36,7 +36,7 @@ const refresh = await fetch(`${URL}/refresh`, {
 
 // fetch to get all images
 let allImages = [];
-const responseAllImages = await fetch(`${URL}/allImages`, {
+const responseAllImages = await fetch(`${URL}/allimages`, {
   method: "GET",
   headers: {
     "Content-Type": "application/json",
@@ -73,22 +73,23 @@ const responseAllUsers = await fetch(`${URL}/allUsers`, {
   }
 
 
+
 ---
 
 <General>
   <!-- lista de posts -->
   <ul class="w-11/12 mx-auto mt-28">
     {
-      allImages.map((post) => (
-        <li class="post hidden h-[600px]  flex-col justify-end my-7 bg-[#2f3138] rounded-lg shadow-xl">
+      allImages && allImages.map((post) => (
+        <li class="post hidden   flex-col justify-end my-7 bg-[#2f3138] rounded-lg shadow-xl">
           <div class=" flex-grow shrink-0">
             <div class="w-full h-full rounded-lg relative">
-              <img  class="absolute inset-0 object-fit size-full rounded-t-lg " src={`http://localhost:3000/uploads/resized/${post.filename}`} /> 
+              <img  class=" object-fit size-full rounded-t-lg " src={`https://ricardhernandez.com/img/${post.image}`} /> 
               </div>
             </div>
           <div class="min-h-24 py-2 px-3">
             <a href={`/users/${post.userId}`}
-            class="text-lg font-medium" >{allUsers.find((user) => user.id === post.userId).name}</a>
+            class="text-lg font-medium" >{post.userName}</a>
             <div class="text-[15px] truncate line-clamp-2 text-wrap" >{
               post.hashtags.split(' ').map(word => word.includes('#') ? <a class="text-[#8e5cf5] text-medium" href={`/hashtags/${(word ? shiftHashtag(word) : '')}`}>{word + ' '}</a> : word + ' ')
             }</div>
@@ -97,7 +98,7 @@ const responseAllUsers = await fetch(`${URL}/allUsers`, {
       ))
     }
   </ul>
-
+  <!-- script to control 10 posts offset -->
   <script>
 
     function showMorePosts() {
@@ -138,3 +139,5 @@ const responseAllUsers = await fetch(`${URL}/allUsers`, {
   <!-- nuevo post -->
   <AddButton />
 </General>
+
+

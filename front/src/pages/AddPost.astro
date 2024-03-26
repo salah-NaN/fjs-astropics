@@ -4,7 +4,7 @@ import Back from "../components/Back.astro";
 
 
 // constants
-const URL = "http://localhost:3000/api";
+const URL = "https://ricardhernandez.com/api";
 
 // if is not cookie redirect
 if (!Astro.cookies.has("token")) {
@@ -38,13 +38,15 @@ if (invalidToken) {
 let alert = false
 if (Astro.request.method === "POST") {
   const data = await Astro.request.formData();
-  const image = data.get("image") as File;
+  const image = data.get("file") as File;
   const comment = data.get("hashtags");
 
   const dataSend = new FormData();
-  dataSend.append("image", image);
+  dataSend.append("file", image);
   dataSend.append("hashtags", comment);
 
+
+  console.log(dataSend)
   try {
     // fetch to upload a post
     const options = {
@@ -56,6 +58,7 @@ if (Astro.request.method === "POST") {
     };
     let upload = await fetch(`${URL}/upload`, options);
     upload = await upload.json();
+    console.log(upload)
     if (upload.message) return Astro.redirect("/Home");
     if(upload.error) alert = true
   } catch (error) {
@@ -99,7 +102,7 @@ if (Astro.request.method === "POST") {
       <input
         type="file"
         id="formFile"
-        name="image"
+        name="file"
         accept="image/*"
         capture="environment"
         class="absolute  w-10/12 top-52 bg-[#675dd3] rounded-lg text-sm"

@@ -1,10 +1,11 @@
 ---
 import General from "../layouts/General.astro";
-import { toast } from "solid-toast";
+// import { toast } from "solid-toast";
+import Toast from "../components/Toast"
 import Login from "./Login.astro";
 
 // constants
-const URL = "http://localhost:3000/api";
+const URL = "https://ricardhernandez.com/api";
 let alert = false;
 
 // delete cookie when user is at Login page
@@ -13,6 +14,7 @@ if (Astro.request.method === "POST") {
   const data = await Astro.request.formData();
   const name = data.get("name");
   const password = data.get("password");
+
 
   // fetch to login credentials
   const response = await fetch(`${URL}/login`, {
@@ -26,13 +28,13 @@ if (Astro.request.method === "POST") {
     .then((res) => res.json())
     .then((res) => {
       if (res.token) {
-        console.log(res)
+        console.log(res);
         Astro.cookies.set("token", res.token);
         // Astro.response.headers.append("token", res.token);
-      } 
-      console.log(res)
-      if(res.error){
-        alert = true
+      }
+      console.log(res);
+      if (res.error) {
+        alert = true;
       }
     })
     .catch((err) => console.error(err));
@@ -45,57 +47,34 @@ if (Astro.request.method === "POST") {
 
 <General>
   {
-    alert  
-    ?
-    <div>
-      <div class=" error w-1/2 top-[108px] left-1/2 -translate-x-1/2 absolute py-2 text-center bg-[#c93636] text-[#fafafa] rounded-lg shadow">
-        Login error!
-    </div>
+    alert ? (
+      <div>
+        <div class=" error w-1/2 top-[108px] left-1/2 -translate-x-1/2 absolute py-2 text-center bg-[#c93636] text-[#fafafa] rounded-lg shadow">
+          Login error!
+        </div>
       </div>
-   : 
-   <div>
-      <div class=" error hidden w-1/2 top-24 left-1/2 -translate-x-1/2 absolute py-2 text-center bg-[#c93636] text-[#fafafa] rounded-lg shadow  ">
-      Login error
-    </div>
+    ) : (
+      <div>
+        <div class=" error hidden w-1/2 top-24 left-1/2 -translate-x-1/2 absolute py-2 text-center bg-[#c93636] text-[#fafafa] rounded-lg shadow  ">
+          Login error
+        </div>
       </div>
+    )
   }
-  <script>
+  <!-- <script>
     import { toast } from "solid-toast";
 
-    const element = document.getElementsByClassName('error')
+    const element = document.getElementsByClassName("error");
     const showError = () => {
-      console.log(element)
-      if(!element[0].classList.contains('hidden')){
-        toast.error('error');
-        console.log('test')
+      console.log(element);
+      if (!element[0].classList.contains("hidden")) {
+        toast.error("error");
+        console.log("test");
       }
-    }
-    showError()
-  </script>
-
-
-
+    };
+    showError();
+  </script> -->
   <Login />
+  <!-- <Toast client:load /> -->
 </General>
 
-
-
-
-<!-- <div class="">
-  <script>
-    function hola(){
-      let visible = true 
-      const error = document.getElementById('error_login')
-      
-      setTimeout(() => {
-      error.classList.remove('hidden')
-        error.classList.add('static')
-      }, 2000);
-      error.classList.remove('static')
-      error.classList.add('hidden')
-
-    }
-    hola()
-  </script>
-  <div class="bg-red-500 hidden" id="error_login">aqui hay un error</div>
-</div> -->

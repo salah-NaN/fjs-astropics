@@ -1,4 +1,6 @@
 ---
+import DropdownNavBar from "./DropdownNavBar";
+
 const { id } = Astro.props;
 
 ---
@@ -22,7 +24,11 @@ const { id } = Astro.props;
                     </div>
                 </div>
 
-                <a class={`${Astro.cookies.get('token') ? 'block' : 'hidden'}`}
+                <div class={`${Astro.cookies.get('token') ? 'block' : 'hidden'} fixed top-[27px] right-9`} >
+                    <DropdownNavBar client:load />
+                </div>
+
+                <!-- <a class={`${Astro.cookies.get('token') ? 'block' : 'hidden'}`}
                 href="/MyProfile">
                     <img class=" inline size-7" src={ '/profile-circle.svg'}/>
                 </a>
@@ -30,5 +36,5 @@ const { id } = Astro.props;
                 <a class={`${Astro.cookies.get('token') ? 'block' : 'hidden'}`}
                 href="/">
                     <img class=" inline ml-2 size-7" src={ '/log-out.svg'}/>
-                </a>
+                </a> -->
             </nav>
