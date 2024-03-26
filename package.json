@@ -1,5 +1,0 @@
-{
-  "dependencies": {
-    "@astrojs/netlify": "^5.2.0"
-  }
-}
