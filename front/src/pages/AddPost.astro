@@ -33,6 +33,9 @@ if (invalidToken) {
   return Astro.redirect("/");
 }
 
+
+// alert to control error
+let alert = false
 if (Astro.request.method === "POST") {
   const data = await Astro.request.formData();
   const image = data.get("image") as File;
@@ -54,13 +57,30 @@ if (Astro.request.method === "POST") {
     let upload = await fetch(`${URL}/upload`, options);
     upload = await upload.json();
     if (upload.message) return Astro.redirect("/Home");
+    if(upload.error) alert = true
   } catch (error) {
     console.log(error);
   }
 }
+
 ---
 
 <General>
+
+  {
+    alert  
+    ?
+    <div>
+      <div class=" w-1/2 top-[92px] z-30 left-1/2 -translate-x-1/2 absolute py-2 text-center bg-[#c93636] text-[#fafafa] rounded-lg shadow">
+        Error to upload image!
+    </div>
+      </div>
+   : 
+   null
+   
+  }
+
+
   <Back url='/Home' />
   <form
     enctype="multipart/form-data"

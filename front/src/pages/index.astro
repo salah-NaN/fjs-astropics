@@ -30,7 +30,7 @@ if (Astro.request.method === "POST") {
         Astro.cookies.set("token", res.token);
         // Astro.response.headers.append("token", res.token);
       } 
-
+      console.log(res)
       if(res.error){
         alert = true
       }
@@ -48,15 +48,32 @@ if (Astro.request.method === "POST") {
     alert  
     ?
     <div>
-      <div class="w-1/2 top-24 left-1/2 -translate-x-1/2 absolute py-2 text-center bg-[#c93636] text-[#fafafa] rounded-lg shadow  ">
+      <div class=" error w-1/2 top-[108px] left-1/2 -translate-x-1/2 absolute py-2 text-center bg-[#c93636] text-[#fafafa] rounded-lg shadow">
+        Login error!
+    </div>
+      </div>
+   : 
+   <div>
+      <div class=" error hidden w-1/2 top-24 left-1/2 -translate-x-1/2 absolute py-2 text-center bg-[#c93636] text-[#fafafa] rounded-lg shadow  ">
       Login error
     </div>
       </div>
-
-
-    
-   : null
   }
+  <script>
+    import { toast } from "solid-toast";
+
+    const element = document.getElementsByClassName('error')
+    const showError = () => {
+      console.log(element)
+      if(!element[0].classList.contains('hidden')){
+        toast.error('error');
+        console.log('test')
+      }
+    }
+    showError()
+  </script>
+
+
 
   <Login />
 </General>

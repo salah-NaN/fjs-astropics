@@ -80,7 +80,7 @@ const responseAllUsers = await fetch(`${URL}/allUsers`, {
   <ul class="w-11/12 mx-auto mt-28">
     {
       allImages.map((post) => (
-        <li class=" h-[600px] flex flex-col justify-end my-7 bg-[#2f3138] rounded-lg shadow-xl">
+        <li class="post hidden h-[600px]  flex-col justify-end my-7 bg-[#2f3138] rounded-lg shadow-xl">
           <div class=" flex-grow shrink-0">
             <div class="w-full h-full rounded-lg relative">
               <img  class="absolute inset-0 object-fit size-full rounded-t-lg " src={`http://localhost:3000/uploads/resized/${post.filename}`} /> 
@@ -97,6 +97,43 @@ const responseAllUsers = await fetch(`${URL}/allUsers`, {
       ))
     }
   </ul>
+
+  <script>
+
+    function showMorePosts() {
+        const posts = document.querySelectorAll('.post'); 
+        console.log(posts)
+        let visiblePosts = 0; 
+
+        try {
+          posts.forEach(post => {
+              if (post.classList.contains('hidden')) {
+                  post.classList.remove('hidden')
+                  console.log('test')
+                  post.classList.add('flex')
+                  visiblePosts++;
+              }
+              
+              if (visiblePosts >= 10) {
+                throw new Error('Breaking loop')
+              }
+          });
+        } catch (error) {
+          console.log(error)
+        }
+    }
+    
+
+    window.addEventListener('scroll', () => {
+        // Cuando el usuario llega al final de la página, muestra más 
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+            showMorePosts();
+        }
+    });
+    
+    // Llama a showMorePosts una vez para mostrar los primeros 10 posts inicialmente
+    showMorePosts();
+    </script>
 
   <!-- nuevo post -->
   <AddButton />
