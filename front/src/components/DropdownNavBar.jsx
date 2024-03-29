@@ -36,7 +36,7 @@ export default function DropdownNavBar({ func: handleLogout }) {
                     <a className={` text-red-500 flex justify-center items-center pl-1.5 pr-2 py-2 w-full transition duration-200 hover:bg-[#34343c]`}
                     href="/" >
                     <img  className="inline mr-2 " src="/log-out.svg" />
-                    Log out</a>
+                    Sign out</a>
                 </ul>
             </button>
 
